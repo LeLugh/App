@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Applicant Details</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-stone-200 pb-8">
+
+  <div class="px-6 pt-8 pb-6">
+    <button id="backBtn" class="mb-6 p-2 hover:bg-white/50 rounded-lg">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+      </svg>
+    </button>
+
+    <div class="flex justify-center mb-8">
+      <div class="bg-white rounded-[40px] px-8 py-4 border-2 border-emerald-400">
+        <img src="logo.png" alt="Logo" class="h-16 w-auto" />
+      </div>
+    </div>
+
+    <div class="flex items-center gap-5 mb-8">
+      <img id="appPhoto" src="applicant1.jpg" alt="Applicant Photo" class="w-24 h-24 rounded-full object-cover border-4 border-stone-200" />
+      <div>
+        <h1 id="appName" class="text-stone-900 mb-1">Name</h1>
+        <p id="appPosition" class="text-stone-700">Position</p>
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-stone-900 mb-6">Applicant Information</h2>
+
+      <div class="space-y-5">
+        <div class="flex">
+          <span class="w-28 text-stone-900">Email</span>
+          <span id="appEmail" class="text-stone-700"></span>
+        </div>
+
+        <div class="flex">
+          <span class="w-28 text-stone-900">Phone</span>
+          <span id="appPhone" class="text-stone-700"></span>
+        </div>
+
+        <div class="flex">
+          <span class="w-28 text-stone-900">Address</span>
+          <span id="appAddress" class="text-stone-700"></span>
+        </div>
+
+        <div class="flex">
+          <span class="w-28 text-stone-900">Status</span>
+          <span id="appStatus" class="text-stone-700"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mb-8">
+      <h2 class="text-stone-900 mb-6">Resume</h2>
+
+      <div class="flex items-center gap-3 bg-white rounded-2xl px-6 py-4 border border-stone-300">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-stone-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 4H7a2 2 0 01-2-2V5a2 2 0 012-2h7l5 5v12a2 2 0 01-2 2z" />
+        </svg>
+        <span id="appResume" class="text-stone-900"></span>
+      </div>
+    </div>
+
+    <div class="flex gap-4">
+      <button id="scheduleBtn" class="flex-1 bg-emerald-400 text-white py-4 rounded-full">Schedule Interview</button>
+      <button id="hireBtn" class="flex-1 bg-white text-stone-900 py-4 rounded-full border-2 border-stone-300">Hire</button>
+    </div>
+
+  </div>
+
+  <script src="main.js"></script>
+</body>
+</html>

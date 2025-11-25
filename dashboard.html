@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="min-h-screen bg-stone-200 pb-8 relative">
+  <button id="logoutBtn" class="absolute top-6 right-6 p-2 hover:bg-white/50 rounded-lg z-10">
+  <svg xmlns="http://www.w3.org/2000/svg" 
+       class="w-8 h-8 text-stone-800" 
+       fill="none" viewBox="0 0 24 24" 
+       stroke="currentColor" stroke-width="2.5">
+    <path stroke-linecap="round" stroke-linejoin="round" d="M12 5H6a2 2 0 00-2 2v10a2 2 0 002 2h6" />
+    <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H9" />
+  </svg>
+</button>
+
+  <div class="px-6 pt-8 pb-6">
+    <div class="flex justify-center mb-6">
+      <div class="bg-white rounded-[60px] px-12 py-6 border-4 border-emerald-400 shadow-md">
+        <img src="logo.png" alt="Logo" class="h-20 w-auto" />
+      </div>
+    </div>
+
+    <h1 class="text-center text-stone-900 mb-8">Dashboard</h1>
+
+    <div class="grid grid-cols-3 gap-4 mb-8">
+      <div id="goApplicants" class="cursor-pointer bg-stone-300/30 rounded-3xl p-6 flex flex-col items-center justify-center hover:bg-stone-300/50 transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-emerald-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M16 14a4 4 0 10-8 0 4 4 0 008 0zM12 2a9 9 0 019 9v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5A9 9 0 0112 2z"/>
+        </svg>
+        <p class="text-stone-900 mb-1">Applicants</p>
+        <p id="applicantCount" class="text-stone-900">0</p>
+      </div>
+
+      <div id="goJobs" class="cursor-pointer bg-stone-300/30 rounded-3xl p-6 flex flex-col items-center justify-center hover:bg-stone-300/50 transition-all">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-emerald-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 7h16M4 12h16M4 17h16" />
+        </svg>
+        <p class="text-stone-900 mb-1">Job Listings</p>
+        <p id="jobCount" class="text-stone-900">0</p>
+      </div>
+
+      <div class="bg-stone-300/30 rounded-3xl p-6 flex flex-col items-center justify-center">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 text-emerald-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2M12 2a10 10 0 100 20 10 10 0 000-20z" />
+        </svg>
+        <p class="text-stone-900 mb-1">Interviews</p>
+        <p id="interviewCount" class="text-stone-900">0</p>
+      </div>
+    </div>
+
+    <!-- job listing preview -->
+    <div class="mb-8">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="text-stone-900">Job Listing</h2>
+        <button id="goJobs" class="bg-emerald-400 text-white px-8 py-2 rounded-full hover:bg-emerald-500 shadow-md">Manage</button>
+      </div>
+
+      <div id="jobPreview" class="space-y-3">
+        <!-- will be clickable if JS wants to show recent jobs -->
+      </div>
+    </div>
+
+    <h2 class="text-stone-900 mb-4">Recent Applicants</h2>
+    <div id="recentApplicants" class="space-y-4"></div>
+
+  </div>
+
+  <script src="main.js"></script>
+  <script>
+    // small helper to render previews (optional)
+    (function renderPreview(){
+      try {
+        const jobs = JSON.parse(localStorage.getItem("jobs")||"[]");
+        const apps = JSON.parse(localStorage.getItem("applicants")||"[]");
+        const jobPreview = document.querySelector("#jobPreview");
+        const recentEl = document.querySelector("#recentApplicants");
+        if (jobPreview && jobs.length) {
+          jobPreview.innerHTML = jobs.slice(0,2).map(j => `
+            <div class="bg-white rounded-2xl px-6 py-4 border border-stone-300">
+              ${j.title}
+            </div>
+          `).join("");
+        }
+        if (recentEl && apps.length) {
+          recentEl.innerHTML = apps.slice(0,2).map(a => `
+            <div data-applicant-id="${a.id}" class="bg-white rounded-2xl p-5 border border-stone-300 cursor-pointer flex items-center gap-4">
+              <img src="${a.photo}" class="w-16 h-16 rounded-full object-cover border-2 border-stone-200" />
+              <div class="flex-1">
+                <h3 class="text-stone-900 mb-1">${a.name}</h3>
+                <p class="text-stone-600">${a.position}</p>
+              </div>
+            </div>
+          `).join("");
+          // attach click handlers
+          document.querySelectorAll('[data-applicant-id]').forEach(el=>{
+            el.onclick = ()=> {
+              const id = el.getAttribute('data-applicant-id');
+              if (id) {
+                localStorage.setItem('selectedApplicantId', id);
+                window.location.href = 'applicantdetailspage.html';
+              }
+            };
+          });
+        }
+      } catch(e){/* ignore preview errors */}
+    })();
+  </script>
+</body>
+</html>
